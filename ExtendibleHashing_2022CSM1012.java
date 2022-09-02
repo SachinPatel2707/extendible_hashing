@@ -24,14 +24,9 @@ class Record
 class Bucket
 {
     int localDepth = 0;
-    
-    // change this as per requirement
-    int bucketSize = 2;
     int nextEmptySlotIndex = 0;
-
-    Record[] recordArr = new Record[bucketSize];
-
     int nextBucket = -1;
+    Record[] recordArr = new Record[Data.bucketSize];
 }
 
 // ===== ===== ===== =====
@@ -55,8 +50,17 @@ public class ExtendibleHashing_2022CSM1012
         Data.addEntryHashMap("", 0);
 
         String[] record = {"49987 20123 fnx 489", "16106 3422 dmk 1140"};
-        recordOp.insertRecord(record[0]);
-        recordOp.insertRecord(record[1]);
+        for (int i = 0; i < record.length; i++)
+        {
+            Data.setIsGlobalDepthExpanded(false);
+            String[] recordItems = record[i].split(" ");
+            Record newRecord = new Record(
+                    Integer.parseInt(recordItems[0]),
+                    Integer.parseInt(recordItems[1]),
+                    recordItems[2],
+                    Integer.parseInt(recordItems[3]));
+            recordOp.insertRecord(newRecord);
+        }
         System.out.println();
     }
 }

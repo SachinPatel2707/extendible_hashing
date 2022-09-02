@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class HashOperations {
     public String getHashValue (int id, int depth)
     {
@@ -19,5 +21,20 @@ public class HashOperations {
         }
 
         return binaryStr.toString();
+    }
+
+    public void expandGlobalDepth ()
+    {
+        Map<String, Integer> newHM = new HashMap<>();
+        Map<String, Integer> oldHM = Data.getHashMap();
+
+        for (Map.Entry<String, Integer> entry : oldHM.entrySet())
+        {
+            newHM.put(entry.getKey() + "0", entry.getValue());
+            newHM.put(entry.getKey() + "1", entry.getValue());
+        }
+
+        Data.setHashMap(newHM);
+        Data.setGlobalDepth(Data.getGlobalDepth()+1);
     }
 }

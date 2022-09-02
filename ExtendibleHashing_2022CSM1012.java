@@ -43,24 +43,20 @@ public class ExtendibleHashing_2022CSM1012
 
     public static void main (String[] args) throws IOException
     {
-        GenerateDataset data = new GenerateDataset();
-        data.generateInitialData();
+        // GenerateDataset data = new GenerateDataset();
+        // data.generateInitialData();
 
-        Bucket[] simSecMem = new Bucket[100001];
         for (int i = 0; i < 100001; i++)
         {
             Bucket newBucket = new Bucket();
-            simSecMem[i] = newBucket;
+            Data.setBucket(i, newBucket);
         }
-        
-        int globalDepth = 1;
-        Map<String, Integer> hashMap = new HashMap<>();
-        
-        hashMap.put("0", 0);
-        hashMap.put("1", 0);
+
+        Data.addEntryHashMap("", 0);
 
         String[] record = {"49987 20123 fnx 489", "16106 3422 dmk 1140"};
-        recordOp.insertRecord(record[0], globalDepth, hashMap, simSecMem);
-        System.out.println(hashMap);
+        recordOp.insertRecord(record[0]);
+        recordOp.insertRecord(record[1]);
+        System.out.println();
     }
 }

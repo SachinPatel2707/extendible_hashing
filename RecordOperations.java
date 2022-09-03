@@ -1,11 +1,13 @@
+import java.util.*;
+
 public class RecordOperations {
     public void insertRecord (Record record)
     {
         HashOperations hashOp = new HashOperations();
 
         String hashVal = hashOp.getHashValue(record.id, Data.getGlobalDepth());
-        int bucketNo = Data.getHashMap().get(hashVal);
-        Bucket bucket = Data.getSimSecMem()[bucketNo];
+        int bucketIdx = Data.getHashMap().get(hashVal);
+        Bucket bucket = Data.getSimSecMem()[bucketIdx];
 
         if (bucket.nextEmptySlotIndex >= 0)
         {            
@@ -31,9 +33,55 @@ public class RecordOperations {
         
         if (bucket.localDepth < Data.getGlobalDepth())
         {
-            // increase localDepth by 1
-            // rehash the values in the bucket to see if they move to the new bucket
-            // try reinserting the new record
+            List<Record> tempRecordArr = new ArrayList<>();
+            
+            for (Record x : bucket.recordArr)
+                tempRecordArr.add(x);
+            
+            if (bucket.nextBucket != -1)
+            {
+                Bucket ofBucket = Data.getSimSecMem()[bucket.nextBucket];
+                for (Record x : ofBucket.recordArr)
+                    tempRecordArr.add(x);
+                
+                while (ofBucket.nextBucket != -1)
+                {
+                    ofBucket = Data.getSimSecMem()[ofBucket.nextBucket];
+                    for (Record x : ofBucket.recordArr)
+                        tempRecordArr.add(x);
+                }
+            }
+
+            bucket.nextBucket = -1;
+            bucket.nextEmptySlotIndex = 0;
+            bucket.localDepth += 1;
+            Arrays.fill(bucket.recordArr, null);
+
+            int newBucketIdx = Data.nextAvailableBucket++;
+            Bucket newBucket = Data.getSimSecMem()[newBucketIdx];
+            newBucket.localDepth = bucket.localDepth;
+
+            List<String> hashValuesToModify = new ArrayList<>();
+
+            for (Map.Entry<String, Integer> entry : Data.getHashMap().entrySet())
+            {
+                if (entry.getValue() == bucketIdx)
+                    hashValuesToModify.add(entry.getKey());
+            }
+
+            int length = hashValuesToModify.size();
+
+            for (int i = length/2; i < length; i++)
+            {
+                Data.addEntryHashMap(hashValuesToModify.get(i), newBucketIdx);
+            }
+            
+            for (Record x : tempRecordArr)
+            {
+                insertRecord(x);
+            }
+
+            insertRecord(record);
         }
         else if (bucket.localDepth == Data.getGlobalDepth())
         {
@@ -49,8 +97,8 @@ public class RecordOperations {
                     bucket = Data.getSimSecMem()[bucket.nextBucket];
                 }
 
-                bucket.nextBucket = Data.nextAvailableOverflowBucket;
-                Bucket newBucket = Data.getSimSecMem()[Data.nextAvailableOverflowBucket];
+                bucket.nextBucket = Data.nextAvailableOverflowBucket--;
+                Bucket newBucket = Data.getSimSecMem()[bucket.nextBucket];
                 newBucket.recordArr[newBucket.nextEmptySlotIndex] = record;
                 newBucket.nextEmptySlotIndex = (newBucket.nextEmptySlotIndex == Data.bucketSize-1) ? -1 : newBucket.nextEmptySlotIndex+1;
                 return;

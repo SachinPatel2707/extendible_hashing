@@ -36,5 +36,6 @@ public class HashOperations {
 
         Data.setHashMap(newHM);
         Data.setGlobalDepth(Data.getGlobalDepth()+1);
+        Data.setIsGlobalDepthExpanded(true);
     }
 }

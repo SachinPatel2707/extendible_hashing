@@ -49,17 +49,55 @@ public class ExtendibleHashing_2022CSM1012
 
         Data.addEntryHashMap("", 0);
 
-        String[] record = {"49987 20123 fnx 489", "16106 3422 dmk 1140"};
-        for (int i = 0; i < record.length; i++)
+        // String[] record = {"16103 20123 fnx 489", "16106 3422 dmk 1140", "16107 100 xbt 1019", "16108 20123 fnx 489", "16109 20123 fnx 489"};
+
+        File fObj = new File ("original.txt");
+        Scanner fRead = new Scanner (fObj);
+        List<String> records = new ArrayList<>();
+
+        while (fRead.hasNextLine())
+        {
+            records.add(fRead.nextLine());
+        }
+        fRead.close();
+
+        for (int i = 0; i < records.size(); i++)
         {
             Data.setIsGlobalDepthExpanded(false);
-            String[] recordItems = record[i].split(" ");
+            String[] recordItems = records.get(i).split(" ");
             Record newRecord = new Record(
                     Integer.parseInt(recordItems[0]),
                     Integer.parseInt(recordItems[1]),
                     recordItems[2],
                     Integer.parseInt(recordItems[3]));
             recordOp.insertRecord(newRecord);
+            print();
+        }
+        // print();
+    }
+
+    
+    static void print ()
+    {
+        for (Map.Entry<String, Integer> entry : Data.getHashMap().entrySet())
+        {
+            System.out.println();
+            System.out.print("{ " + entry.getKey() + " } ");
+            int bktIdx = entry.getValue();
+            
+            while (bktIdx != -1)
+            {
+                Bucket bkt = Data.getSimSecMem()[bktIdx];
+
+                System.out.print("-> [ ");
+                for (Record record : bkt.recordArr)
+                {
+                    if (record != null)
+                        System.out.print(record.id + " ");
+                }
+                System.out.print("]");
+                bktIdx = bkt.nextBucket;
+            }
         }
         System.out.println();
     }

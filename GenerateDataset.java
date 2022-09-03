@@ -1,5 +1,5 @@
 import java.io.*;
-import java.util.Random;
+import java.util.*;
 
 public class GenerateDataset 
 {
@@ -14,13 +14,21 @@ public class GenerateDataset
         {
             Random random = new Random();
             FileWriter fwrite = new FileWriter(original);
+            Set<Integer> idSet = new HashSet<>();
+
             for (int index = 1; index <= 100; index++)
             {
+                int id = random.nextInt(60001);
+                if (idSet.contains(id))
+                {
+                    index -= 1;
+                    continue;
+                }
                 int saleAmount = random.nextInt(60001);
                 String customerName = generateRandomString();
                 int category = random.nextInt(1501);
 
-                fwrite.write(index + " " + saleAmount + " " + customerName + " " + category + "\n");
+                fwrite.write(id + " " + saleAmount + " " + customerName + " " + category + "\n");
             }
             fwrite.close();
         }

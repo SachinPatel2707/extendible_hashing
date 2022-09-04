@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Data {
     private static Bucket[] simSecMem = new Bucket[100001];
-    private static Map<String, Integer> hashMap = new HashMap<>();
+    private static HashMap<String, Integer> hashMap = new LinkedHashMap<>();
     private static int globalDepth;
     private static boolean isGlobalDepthExpanded;
 
@@ -28,11 +28,11 @@ public class Data {
         return simSecMem[index];
     }
 
-    static Map<String, Integer> getHashMap ()
+    static HashMap<String, Integer> getHashMap ()
     {
         return hashMap;
     }
-    static void setHashMap (Map<String, Integer> data)
+    static void setHashMap (HashMap<String, Integer> data)
     {
         hashMap = data;
     }

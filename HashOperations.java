@@ -25,10 +25,10 @@ public class HashOperations {
 
     public void expandGlobalDepth ()
     {
-        Map<String, Integer> newHM = new HashMap<>();
-        Map<String, Integer> oldHM = Data.getHashMap();
+        HashMap<String, Integer> newHM = new LinkedHashMap<>();
+        HashMap<String, Integer> oldHM = Data.getHashMap();
 
-        for (Map.Entry<String, Integer> entry : oldHM.entrySet())
+        for (HashMap.Entry<String, Integer> entry : oldHM.entrySet())
         {
             newHM.put(entry.getKey() + "0", entry.getValue());
             newHM.put(entry.getKey() + "1", entry.getValue());

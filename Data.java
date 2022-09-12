@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Data {
-    private static Bucket[] simSecMem = new Bucket[100001];
+    private static Bucket[] simSecMem = new Bucket[500001];
     private static HashMap<String, Integer> hashMap = new LinkedHashMap<>();
     private static int globalDepth;
     private static boolean isGlobalDepthExpanded;
@@ -9,7 +9,7 @@ public class Data {
     // change this as per requirement
     public static int bucketSize = 2;
     public static int nextAvailableBucket = 1;
-    public static int nextAvailableOverflowBucket = 100000;
+    public static int nextAvailableOverflowBucket = 500000;
     
     static Bucket[] getSimSecMem ()
     {

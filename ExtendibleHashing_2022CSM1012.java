@@ -41,15 +41,13 @@ public class ExtendibleHashing_2022CSM1012
         // GenerateDataset data = new GenerateDataset();
         // data.generateInitialData();
 
-        for (int i = 0; i < 100001; i++)
+        for (int i = 0; i < 500001; i++)
         {
             Bucket newBucket = new Bucket();
             Data.setBucket(i, newBucket);
         }
 
         Data.addEntryHashMap("", 0);
-
-        // String[] record = {"16103 20123 fnx 489", "16106 3422 dmk 1140", "16107 100 xbt 1019", "16108 20123 fnx 489", "16109 20123 fnx 489"};
 
         File fObj = new File ("original.txt");
         Scanner fRead = new Scanner (fObj);

@@ -85,7 +85,7 @@ public class RecordOperations {
         }
         else if (bucket.localDepth == Data.getGlobalDepth())
         {
-            if (!Data.isGlobalDepthExpanded())
+            if (!Data.isGlobalDepthExpanded() && Data.getGlobalDepth() < 16)
             {
                 hashOp.expandGlobalDepth();
                 insertRecord(record);
